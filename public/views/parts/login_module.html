@@ -1,0 +1,84 @@
+<div class="mask">
+    <div class="window container">
+        <div class="window-close" ng-click="signupWindow.toggle()"><i class="fa fa-times"></i></div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="window-signup">
+                    <h4>Create a Lift account</h4>
+                    <form novalidate>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-tripadvisor"></i></div>
+                                <input class="form-control" type="text" ng-model="signup.name" placeholder="Name">
+                            </div>
+                            <div class="error-input" ng-show="signup.errMsg.name">
+                                <ul>
+                                    <li ng-repeat="msg in signup.errMsg.name">{{msg}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+                                <input class="form-control" type="email" ng-model="signup.email" placeholder="Email address">
+                            </div>
+                            <div class="error-input" ng-show="signup.errMsg.email" >
+                                <ul>
+                                    <li ng-repeat="msg in signup.errMsg.email">{{msg}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-key"></i></div>
+                                <input class="form-control" type="password" ng-model="signup.password" placeholder="Create a password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-key"></i></div>
+                                <input class="form-control" type="password" ng-model="signup.verifyPassword" placeholder="Verify your password">
+                            </div>
+                            <div class="error-input" ng-show="signup.errMsg.pw">
+                                <ul>
+                                    <li ng-repeat="msg in signup.errMsg.pw">{{msg}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control btn-submit" ng-click="signup.submit()" type="button" value="Sign up">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="window-login">
+                    <h4>Log in using your Life account</h4>
+                    <form>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                <input class="form-control" type="email" placeholder="Email address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-key"></i></div>
+                                <input class="form-control" type="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <label >
+                                <input type="checkbox">Remember me
+                            </label>
+                            <a href="pwhelp.html">Password Help</a>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control btn-submit" type="button" value="Log in">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

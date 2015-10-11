@@ -1,0 +1,22 @@
+doctype html
+html(lang="en" ng-app="main")
+  head
+    title= #{title}
+    meta(name="viewport" ,content="width=device-width")
+    link(rel="stylesheet", href="/css/normalize.css")
+    link(rel="stylesheet" , href="/css/bootstrap.min.css")
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")
+    link(rel='stylesheet', href='/css/style.css')
+  body(ng-controller="mainCtrl")
+    nav#nav
+      button.btn-transparent(ng-click="signupWindow.toggle()") Login / Register
+    block content
+    footer#footer
+      p.
+        Copyright by Ken Chan
+script(src="/js/lib/jquery-1.11.3.js")
+script(src="/js/lib/bootstrap.min.js")
+script(src="/js/lib/angular/angular.min.js")
+script(src="/js/lib/angular/angular-route.min.js")
+script(src="/js/main/main.js")
+
