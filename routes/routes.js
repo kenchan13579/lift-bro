@@ -1,4 +1,4 @@
-var userService = require("./service/user-service");
+var userService = require("./controller/service/user-service");
 
 module.exports = function ( app ) {
     app.get("/" , function ( req, res ) {
@@ -11,8 +11,16 @@ module.exports = function ( app ) {
             if (err) {
                 res.end("ERROR!");
             }
-            // success
-            //res.redirect("some next page")
+            res.redirect("back")
         })
-    })
+    });
+    app.get("/api/signin" , function(req,res){
+        var loginForm = req.body;
+        userService.find(req.body, function ( err){
+            if ( err ) {
+                res.end(err);
+            }
+
+        })
+    });
 }

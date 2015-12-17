@@ -2,15 +2,13 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    username: {type:String, require:"Username is required"},
-    password: {type:String, require:"Password is required"},
-    email: {type:String , require:"Email is required"},
+    username: {type:String, required:"Username is required" },
+    password: {type:String, required:"Password is required"},
+    email: {type:String , require:"Email is required" ,unique:true},
     created: {type: Date, default: Date.now}
 
 });
 
-var User = moogoose.model("user" , userSchema);
+var User = mongoose.model("kenkens" , userSchema);
 
-module.exports = {
-    User : User;
-};
+exports.User = User;

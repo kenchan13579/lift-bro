@@ -8,10 +8,10 @@ var mongoose = require("mongoose");
 var config = require("./config");
 var routes = require("./routes");
 var app = express();
-
+global.__base = __dirname + "/"
 mongoose.connect(config.mongodbURL);
 // view engine setup
-app.set('views', path.join(__dirname, 'public/views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
@@ -29,7 +29,7 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-routes(app);
+routes(app , mongoose);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
