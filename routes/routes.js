@@ -1,4 +1,4 @@
-var userService = require("./controller/service/user-service");
+var userService = require("../controller/service/user-service");
 
 module.exports = function ( app ) {
     app.get("/" , function ( req, res ) {
@@ -23,4 +23,8 @@ module.exports = function ( app ) {
 
         })
     });
-}
+    app.get("/parts/*" , function(req , res){
+        console.log(req.path);
+        res.render("parts/login_module",{});
+    });
+};

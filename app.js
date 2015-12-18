@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 var config = require("./config");
-var routes = require("./routes");
+var routes = require("./routes/routes");
 var app = express();
 global.__base = __dirname + "/"
 mongoose.connect(config.mongodbURL);
@@ -20,13 +20,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(require('node-sass-middleware')({
-  src: __dirname+'/public',
-  dest: __dirname+'/public',
-  debug:true,
-  indentedSyntax: true,
-  sourceMap: true
-}));
+// app.use(require('node-sass-middleware')({
+//   src: __dirname+'/public',
+//   dest: __dirname+'/public',
+//   debug:true,
+//   indentedSyntax: true,
+//   sourceMap: true
+// }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 routes(app , mongoose);

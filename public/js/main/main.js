@@ -34,7 +34,7 @@ main
     })
     .directive("loginModule", function() {
         return {
-            templateUrl: "/views/parts/login_module.html"
+            templateUrl: "parts/login_module"
         }
     })
     .service("validate", function() {
