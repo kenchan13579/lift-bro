@@ -10,6 +10,6 @@ module.exports = function (callback) {
     db.open("open" , function (){
         console.log("connected");
         callback(null,mongoose);
-    })
+    });
 
 }

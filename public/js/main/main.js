@@ -4,21 +4,23 @@ var main = angular.module("main", []);
 main
     .controller("mainCtrl", function($scope, loginSignupFactory, validate) {
         $scope.signup = {
+           errMsg: {},
             submit: function() {
-                    this.errMsg = {};
+
                     this.errMsg = validate.signupvalidate(this.name, this.email, this.password, this.verifyPassword);
                     for (var obj in this.errMsg) {
                         console.log("%a",this.errMsg[obj]);
                     }
                     if (!this.errMsg) {
+                        var that = this;
                         loginSignupFactory.signup({
-                            username: this.name,
-                            email: this.email,
-                            password: this.password
+                            username: that.name,
+                            email: that.email,
+                            password: that.password
                         }).then(function(res) {
                             console.log("success");
                         }, function(res) {
-                            console.log("%s %s %s %s",this.name ,this.email ,this.password ,this.verifyPassword)
+                            console.log("%s %s %s %s",that.name ,that.email ,that.password ,that.verifyPassword)
                         })
                     }
 
@@ -46,11 +48,13 @@ main
             }
             if (name.length < 8) {
                 err.push("Too short : Username has to be 8 characters or above");
+                return err;
             }
             if (!name.match(/[a-zA-Z\s]*/)) {
                 err.push("Invalid characters in the name");
+                return err;
             }
-            return err;
+            return null;
         }
         var validatEmail = function(email) {
             var err = [];
@@ -60,8 +64,9 @@ main
             }
             if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)) {
                 err.push("Invalid email format");
+                return err;
             }
-            return err;
+            return null;
         }
         var validatePassword = function(pw, pw2) {
             var err = [];
@@ -72,14 +77,15 @@ main
 
             if (pw !== pw2) {
                  err.push("Password is different");
+                 return err;
             }
-            return err;
+            return null;
         }
         this.signupvalidate = function(name, email, pw1, pw2) {
             var nameMsg = validateName(name);
             var emailMsg = validatEmail(email);
             var psMsg = validatePassword(pw1, pw2);
-            if (!(nameMsg && emailMsg && psMsg)) {
+            if (!nameMsg && !emailMsg && !psMsg) {
                 return null;
             } else {
                 return {

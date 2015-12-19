@@ -1,3 +1,4 @@
+'use strict';
 var userService = require("../controller/service/user-service");
 
 module.exports = function ( app ) {
@@ -11,8 +12,8 @@ module.exports = function ( app ) {
             if (err) {
                 res.end("ERROR!");
             }
-            res.redirect("back")
-        })
+            res.end("back")
+        });
     });
     app.get("/api/signin" , function(req,res){
         var loginForm = req.body;
@@ -24,7 +25,7 @@ module.exports = function ( app ) {
         })
     });
     app.get("/parts/*" , function(req , res){
-        console.log(req.path);
-        res.render("parts/login_module",{});
+        var p = req.path.slice(1);
+        res.render(p,{});
     });
 };
