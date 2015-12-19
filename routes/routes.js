@@ -7,12 +7,20 @@ module.exports = function ( app ) {
             title : "My daily lift"
         });
     });
-    app.get("/api/signup" , function(req,res){
+    app.get("/app" , function(req, res){
+      if (req.cookie) {
+
+      }
+    });
+    app.post("/api/signup" , function(req,res){
         userService.addUser(req.body , function (err) {
             if (err) {
-                res.end("ERROR!");
+                res.status(400);
+                res.type(".txt")
+                res.end(err);
             }
-            res.end("back")
+
+            res.status(200).end();
         });
     });
     app.get("/api/signin" , function(req,res){

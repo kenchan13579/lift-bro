@@ -18,7 +18,7 @@ main
                             email: that.email,
                             password: that.password
                         }).then(function(res) {
-                            console.log("success");
+                            console.log(res);
                         }, function(res) {
                             console.log("%s %s %s %s",that.name ,that.email ,that.password ,that.verifyPassword)
                         })
