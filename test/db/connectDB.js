@@ -1,6 +1,9 @@
 var config = require("../../config");
 var mongoose = require("mongoose");
 
+
+
+
 module.exports = function (callback) {
     mongoose.connect(config.mongodbURL);
     var db = mongoose.connection;
@@ -8,7 +11,6 @@ module.exports = function (callback) {
         callback(err);
     });
     db.open("open" , function (){
-        console.log("connected");
         callback(null,mongoose);
     });
 

@@ -19,7 +19,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser("secret"));
 // app.use(require('node-sass-middleware')({
 //   src: __dirname+'/public',
 //   dest: __dirname+'/public',
