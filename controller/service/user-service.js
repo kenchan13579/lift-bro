@@ -1,7 +1,7 @@
 var User = require("../../model/user").User,
   bcrypt = require("bcrypt-nodejs"),
-  cookieParser = require("cookie-parser").
-  encode = require("./helpers/encode");
+  crypto = require("crypto"),
+  encode = require("../helpers/encode");
 
 exports.addUser = function(user, next) {
   User.findOne({
@@ -29,19 +29,21 @@ exports.addUser = function(user, next) {
   });
 };
 
-exports.findUser = function(user , cb) {
+exports.validateLogin = function(user, cb) {
   User.findOne({
-    username : user.username,
-    password: bcrypt.compareSync(user.password),
-  } , function (err , res) {
-      if ( err ) {
-        return cb(err);
-      }
-      if (res) {
-        return cb(null , res);
-      } else {
-        return cb("Invalid login");
-      }
+    email: user.email,
+  }, function(err, doc) {
+    if (err) {
+      return cb(err.messages);
+    }
+    // matched record found
+    console.log("doc: %j", doc);
+    if (bcrypt.compareSync(user.password, doc.password)) {
+      return cb(null, doc);
+    } else {
+      // fail
+      return cb("Wrong password");
+    }
   });
 }
 
@@ -54,21 +56,65 @@ exports.showAllUsers = function(callback) {
   });
 }
 
-exports.createCookies = function(user,done){
-  var hashed = encode(user);
+exports.createCookies = function(loginInfo, doc, done) {
+  var expire;
+  var hashed = encode.encrypt(doc);
   var date = new Date();
-  var expire = date.setDate(date.getDate()+7);
-  User.findOne({"_id":user.id},function(err,doc){
+  // if remember is checked, set expire to long time after
+  if (loginInfo.remember) {
+    expire = date.setDate(date.getFullYear() + 10);
+  } else {
+    // otherwise , set it one day
+    expire = date.setDate(date.getDate() + 1);
+  }
+  User.findOne({
+    "_id": doc.id
+  }, function(err, doc) {
     if (err) {
       return done(err);
     }
     doc.hashKey = doc.hashKey || [];
-    doc.hashkey.push({
-      hash: hashed,
-      expire : expire
+    doc.hashKey.push({
+      hashed: hashed,
+      expire: expire,
     });
-    doc.save(function(err){
-      done(err , hashed);
+    // clientCookies will be set in the client
+    var clientCookies = [{
+      "remember": hashed,
+      expire: expire
+    }, {
+      "user_id": encode.encrypt(doc.id),
+      expire: loginInfo.remember ? expire : null
+    }];
+    doc.save(function(err) {
+      done(err, clientCookies);
     });
   });
-}
+};
+/*
+  Check if the cookies are valid,return true|false
+*/
+exports.checkCookies = function(cookies , invalid) {
+  if (cookies.remember && cookies["user_id"]) {
+    var userID = encode.decrypt(cookies["user_id"]);
+    User.findOne({
+      "_id": doc.id
+    }, function(err, doc) {
+      if (err) return invalid(true);
+      var current = new Date().getTime();
+      //check all existing tokens
+      doc.hashKey.forEach(function(val, index, arr) {
+        // delete expired ones
+        if (val.expire && val.expire < current) {
+          arr.splice(index, 1);
+        } else if (val.hashed === cookies.remember) {
+          //valid cookies!
+          return invalid(false, doc );
+        }
+      });
+      return invalid(true);
+    });
+  } else {
+    return invalid(true);
+  }
+};

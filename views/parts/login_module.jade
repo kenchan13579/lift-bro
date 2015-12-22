@@ -1,63 +1,66 @@
 html
-  body
-    .mask
-      .window.container
-        .window-close(ng-click='signupWindow.toggle()')
-          i.fa.fa-times
-        .row
-          .col-md-6.col-sm-12
-            .window-signup
-              h4 Create a Lift account
-              form(novalidate='')
-                .form-group
-                  .input-group
-                    .input-group-addon
-                      i.fa.fa-tripadvisor
-                    input.form-control(type='text', ng-model='signup.name', placeholder='Name')
-                  .error-input(ng-show='signup.errMsg.name')
-                    ul
-                      li(ng-repeat='msg in signup.errMsg.name') {{msg}}
-                .form-group
-                  .input-group
-                    .input-group-addon
-                      i.fa.fa-envelope
-                    input.form-control(type='email', ng-model='signup.email', placeholder='Email address')
-                  .error-input(ng-show='signup.errMsg.email')
-                    ul
-                      li(ng-repeat='msg in signup.errMsg.email') {{msg}}
-                .form-group
-                  .input-group
-                    .input-group-addon
-                      i.fa.fa-key
-                    input.form-control(type='password', ng-model='signup.password', placeholder='Create a password')
-                .form-group
-                  .input-group
-                    .input-group-addon
-                      i.fa.fa-key
-                    input.form-control(type='password', ng-model='signup.verifyPassword', placeholder='Verify your password')
-                  .error-input(ng-show='signup.errMsg.pw')
-                    ul
-                      li(ng-repeat='msg in signup.errMsg.pw') {{msg}}
-                .form-group
-                  input.form-control.btn-submit(ng-click='signup.submit()', type='button', value='Sign up')
-          .col-md-6.col-sm-12
-            .window-login
-              h4 Log in using your Life account
-              form
-                .form-group
-                  .input-group
-                    .input-group-addon
-                      i.fa.fa-user
-                    input.form-control(type='email', placeholder='Email address')
-                .form-group
-                  .input-group
-                    .input-group-addon
-                      i.fa.fa-key
-                    input.form-control(type='password', placeholder='Password')
-                .checkbox
-                  label
-                    input(type='checkbox')
-                    | Remember me
-                  a(href='pwhelp.html') Password Help
-                .form-group
-                  input.form-control.btn-submit(type='button', value='Log in')
+	body
+		.mask
+			.window.container
+				.window-close(ng-click='signupWindow.toggle()')
+					i.fa.fa-times
+				.row
+					.col-md-6.col-sm-12
+						.window-signup
+							h4 Create a Lift account
+							form(novalidate='')
+								.form-group
+									.input-group
+										.input-group-addon
+											i.fa.fa-tripadvisor
+										input.form-control(type='text', ng-model='signup.name', placeholder='Name')
+									.error-input(ng-show='signup.errMsg.name')
+										ul
+											li(ng-repeat='msg in signup.errMsg.name') {{msg}}
+								.form-group
+									.input-group
+										.input-group-addon
+											i.fa.fa-envelope
+										input.form-control(type='email', ng-model='signup.email', placeholder='Email address')
+									.error-input(ng-show='signup.errMsg.email')
+										ul
+											li(ng-repeat='msg in signup.errMsg.email') {{msg}}
+								.form-group
+									.input-group
+										.input-group-addon
+											i.fa.fa-key
+										input.form-control(type='password', ng-model='signup.password', placeholder='Create a password')
+								.form-group
+									.input-group
+										.input-group-addon
+											i.fa.fa-key
+										input.form-control(type='password', ng-model='signup.verifyPassword', placeholder='Verify your password')
+									.error-input(ng-show='signup.errMsg.pw')
+										ul
+											li(ng-repeat='msg in signup.errMsg.pw') {{msg}}
+								.form-group(ng-show="signup.status")
+									p(ng-class="{'bg-danger text-danger':!signup.status.success,'bg-success text-success':signup.status.success}") {{signup.status.messages}}
+								.form-group
+									input.form-control.btn-submit(ng-click='signup.submit()', type='button', value='Sign up')
+					.col-md-6.col-sm-12
+						.window-login
+							h4 Log in using your lift account
+							form
+								.form-group
+									.input-group
+										.input-group-addon
+											i.fa.fa-user
+										input.form-control(type='email', placeholder='Email address' , ng-model="login.email")
+								.form-group
+									.input-group
+										.input-group-addon
+											i.fa.fa-key
+										input.form-control(type='password', placeholder='Password' , ng-model="login.password")
+								.checkbox
+									label
+										input(type='checkbox' ng-model="login.remember")
+										| Remember me
+								.form-group(ng-show="signup.status")
+									p(ng-class="{'bg-danger text-danger':login.status.success,'bg-success text-success':!login.status.success}") {{login.status.messages}}
+								.form-group
+									input.form-control.btn-submit(type='button', value='Log in' , ng-click="login.submit()")

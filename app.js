@@ -28,9 +28,7 @@ app.use(cookieParser("secret"));
 //   sourceMap: true
 // }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 routes(app , mongoose);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -42,6 +40,7 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
+console.log("env:",app.get("env"));
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
