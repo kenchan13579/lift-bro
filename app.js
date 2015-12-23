@@ -20,13 +20,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser("secret"));
-// app.use(require('node-sass-middleware')({
-//   src: __dirname+'/public',
-//   dest: __dirname+'/public',
-//   debug:true,
-//   indentedSyntax: true,
-//   sourceMap: true
-// }));
 app.use(express.static(path.join(__dirname, 'public')));
 routes(app , mongoose);
 // catch 404 and forward to error handler

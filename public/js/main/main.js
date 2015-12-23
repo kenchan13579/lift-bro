@@ -19,7 +19,7 @@ main
             email: that.email,
             password: that.password
           }).then(function(res) {
-            if ( "object" === typeof res) {
+            if ("object" === typeof res) {
               that.status = res.data;
             }
           });
@@ -46,23 +46,28 @@ main
             remember: that.remember
           }).then(function(res) {
 
-            if ( typeof res === 'object'){
+            if (typeof res === 'object') {
               that.status = res.data;
               if (res.data.success) {
-                for ( var i = 0 ; i < res.data.cookies ; i++) {
+                for (var i = 0; i < res.data.cookies.length; i++) {
                   var cookie = res.data.cookies[i];
                   console.log(cookie);
+
                   for (var key in cookie) {
-                    if ( key !== 'expire') {
-                      $cookies.put(key, cookie[key],{
-                        expires : cookie["expire"]
-                      });
+                    if (key !== 'expire') {
+                      if (cookie.expire) {
+                        $cookies.put(key, cookie[key].toString(), {
+                          expires: new Date(cookie.expire)
+                        });
+                      } else {
+                        $cookies.put(key, cookie[key].toString());
+                      }
                     }
                   }
                 }
-              //  $window.location = "/app";
+                $window.location = "/app";
               } else {
-                  console.log(res);
+                that.status = res.data;
               }
             }
           });

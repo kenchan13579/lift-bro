@@ -8,23 +8,30 @@ module.exports = function(app) {
     });
   });
   app.get("/app", function(req, res) {
-    if (req.cookies) {
+    if (req.cookies.remember && req.cookies["user_id"]) {
       userService.checkCookies(req.cookies,function(invalid , doc){
         if (invalid){
-          res.redirect("back");
+          res.redirect("/");
         } else {
-          res.render("app/app" , {
+          return res.render("app/app" , {
             "name" : doc.username
           });
         }
       });
     } else {
-      res.redirect("back");
+      res.redirect("/");
     }
 
   });
   app.all("/api/logout" , function (req,res){
-    // delete token from db
+    if ( req.cookies.remember && req.cookies["user_id]"]) {
+      userService.deleteCookies(req.cookies);
+      res.clearCookie("remember");
+      res.clearCookie("user_id");
+      res.end();
+    } else {
+      res.end("You are not logged in")
+    }
   });
   app.post("/api/signup", function(req, res) {
 
@@ -37,7 +44,6 @@ module.exports = function(app) {
           messages: err
         });
       }
-
       res.status(200).json({
         success: true,
         messages: "Account is successfully created"
