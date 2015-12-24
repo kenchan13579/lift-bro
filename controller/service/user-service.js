@@ -56,7 +56,7 @@ exports.showAllUsers = function(callback) {
 }
 
 exports.createCookies = function(loginInfo, doc, done) {
-  var expire;
+  var expire; // in millisecond
   var hashed = encode.encrypt(doc.email + Date.now());
   var date = new Date();
   // if remember is checked, set expire to long time after
@@ -79,11 +79,13 @@ exports.createCookies = function(loginInfo, doc, done) {
     });
     // clientCookies will be set in the client
     var clientCookies = [{
-      "remember": hashed,
-      expire: expire
+      key: "remember",
+      value: hashed,
+      expire: loginInfo.remember ? date : 0
     }, {
-      "user_id": encode.encrypt(doc.id),
-      expire: loginInfo.remember ? expire : null
+      key: "user_id",
+      value: encode.encrypt(doc.id),
+      expire: loginInfo.remember ? date : 0
     }];
     doc.save(function(err) {
       done(err, clientCookies);
@@ -102,7 +104,7 @@ exports.checkCookies = function(cookies, invalid) {
     if (err || !doc) return invalid(true);
     var current = new Date().getTime();
     //check all existing tokens
-    for (var i = 0 ; i < doc.hashKey.length ;i++){
+    for (var i = 0; i < doc.hashKey.length; i++) {
       var val = doc.hashKey[i];
       if (val.expire && val.expire < current) {
         doc.hashKey.splice(index, 1);

@@ -45,31 +45,12 @@ main
             password: that.password,
             remember: that.remember
           }).then(function(res) {
-
-            if (typeof res === 'object') {
-              that.status = res.data;
-              if (res.data.success) {
-                for (var i = 0; i < res.data.cookies.length; i++) {
-                  var cookie = res.data.cookies[i];
-                  console.log(cookie);
-
-                  for (var key in cookie) {
-                    if (key !== 'expire') {
-                      if (cookie.expire) {
-                        $cookies.put(key, cookie[key].toString(), {
-                          expires: new Date(cookie.expire)
-                        });
-                      } else {
-                        $cookies.put(key, cookie[key].toString());
-                      }
-                    }
-                  }
-                }
-                $window.location = "/app";
-              } else {
-                that.status = res.data;
-              }
+            that.status = res.data;
+            if (res.data.success) {
+              $window.location = "/app";
             }
+          }, function(res) {
+            console.log("wrong");
           });
         }
       }

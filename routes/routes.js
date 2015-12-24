@@ -3,18 +3,23 @@ var userService = require("../controller/service/user-service");
 
 module.exports = function(app) {
   app.get("/", function(req, res) {
-    res.render("index", {
-      title: "My daily lift"
-    });
+    if (req.cookies.remember && req.cookies["user_id"]) {
+      res.redirect("/app");
+    } else {
+      res.render("index", {
+        title: "Lift Bro"
+      });
+    }
+
   });
   app.get("/app", function(req, res) {
     if (req.cookies.remember && req.cookies["user_id"]) {
-      userService.checkCookies(req.cookies,function(invalid , doc){
-        if (invalid){
+      userService.checkCookies(req.cookies, function(invalid, doc) {
+        if (invalid) {
           res.redirect("/");
         } else {
-          return res.render("app/app" , {
-            "name" : doc.username
+          return res.render("app/app", {
+            "name": doc.username
           });
         }
       });
@@ -23,8 +28,8 @@ module.exports = function(app) {
     }
 
   });
-  app.all("/api/logout" , function (req,res){
-    if ( req.cookies.remember && req.cookies["user_id]"]) {
+  app.all("/api/logout", function(req, res) {
+    if (req.cookies.remember && req.cookies["user_id]"]) {
       userService.deleteCookies(req.cookies);
       res.clearCookie("remember");
       res.clearCookie("user_id");
@@ -38,7 +43,6 @@ module.exports = function(app) {
     userService.addUser(req.body, function(err) {
       if (err) {
         res.status(400);
-        res.type("json");
         res.json({
           success: false,
           messages: err
@@ -55,23 +59,27 @@ module.exports = function(app) {
     userService.validateLogin(loginForm, function(err, doc) {
       if (err) {
         // such as invalid logins
-        res.json({
+        res.status(401).json({
           success: false,
           messages: err
         });
       } else {
         // send them cookies
-        userService.createCookies(loginForm,doc, function(err, cookies) {
+        userService.createCookies(loginForm, doc, function(err, cookies) {
           if (err) {
-            res.json({
+            res.status(401).json({
               success: false,
               messages: err
             });
           }
-          res.status(200).json({
+          cookies.forEach(function(val, index, arr) {
+            res.cookie(val.key, val.value, {
+              expires: val.expire
+            });
+          });
+          res.json({
             success: true,
-            messages: "redirecting...",
-            cookies: cookies
+            messages: "redirecting..."
           });
         });
 
