@@ -8,7 +8,7 @@ var Nav = React.createClass({
   render: function () {
     return (
       <div>
-        <button type="button" onClick="{this.show}">Menu</button>
+        <span onClick={this.show}><i className="fa fa-2x fa-bars"></i></span>
         <Menu ref="menu" />
       </div>
     );
@@ -19,36 +19,39 @@ var Menu = React.createClass({
   getInitialState : function () {
     return {
       "visible" : false,
-      "list" :["link1","link2","link3"]
+      "list" :[{
+        href: "link",
+        content:"link1"
+      },{
+          href:"link2",
+          content:"link2"
+        },{
+          href:"link3",
+          content:"link3"
+        }]
     }
   },
   show : function(){
     this.setState({"visible" : true});
-    document.addEventListener("click" , this.hide.bind(this))
+    document.addEventListener("click" , this.hide);
   },
   hide : function(){
-    document.removeEventListener("click" , this.hide.bind(this))
+    document.removeEventListener("click" , this.hide)
     this.setState({"visible":false});
   },
   render : function () {
+    var listItem = this.state.list.map(function(val , index){
+      return <li key={index}><a href={val.href}>{val.content}</a></li>;
+    });
     return (
-      <div className={"app-menu" + (this.state.visible ? "-visible":"no")} >
-        <MenuItem list={this.state.list} />
-      </div>
+      <ul className={"nav-menu" + (this.state.visible ? "-visible":"")}>
+        {listItem}
+      </ul>
     );
   }
 });
 
-var MenuItem = React.createClass({
-  render : function(){
-    var listItem = this.props.list.map(function(val){
-      return <li>{val}</li>;
-    });
-    return (
-      <ul>{listItem}</ul>
-    );
-  }
-});
+
 ReactDOM.render(
   <Nav/>,
   document.getElementById("nav")

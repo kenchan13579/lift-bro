@@ -23,10 +23,12 @@ gulp.task("brsf-app",function(){
       transform:[reactify],
 		  debug : !gulp.env.production
     }))
-    .pipe(concat("app.js"))
+    //.pipe(concat("app.js"))
     .pipe(gulp.dest("public/js/"));
 });
 
 gulp.task("auto", function(){
   gulp.watch("src/js/app/*",["brsf-app"]);
 });
+
+gulp.task("default",['auto',"sass-watch"]);
