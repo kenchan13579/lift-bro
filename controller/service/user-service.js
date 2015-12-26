@@ -33,9 +33,10 @@ exports.validateLogin = function(user, cb) {
   User.findOne({
     email: user.email,
   }, function(err, doc) {
-    if (err) {
-      return cb(err.messages);
+    if (err || !doc) {
+      return cb(err.messages || "wrong");
     }
+
     // matched record found
     if (bcrypt.compareSync(user.password, doc.password)) {
       return cb(null, doc);

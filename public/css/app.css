@@ -1,5 +1,6 @@
 ul {
-  list-style: none; }
+  list-style: none;
+  padding: 0; }
 
 #nav {
   width: 100%;
@@ -24,3 +25,16 @@ ul {
         background-color: #e7391a; }
   #nav .nav-menu-visible {
     left: 0; }
+
+.calendar {
+  width: 100%; }
+  .calendar li {
+    display: inline-block;
+    margin: 0;
+    width: 14.28571%;
+    height: 11.11111vh;
+    border: 1px solid #e7391a;
+    text-align: center;
+    vertical-align: top; }
+  .calendar .calendar-weekday-name > li {
+    height: 30px; }
