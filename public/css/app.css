@@ -27,14 +27,17 @@ ul {
     left: 0; }
 
 .calendar {
+  position: relative;
   width: 100%; }
-  .calendar li {
-    display: inline-block;
-    margin: 0;
-    width: 14.28571%;
-    height: 11.11111vh;
-    border: 1px solid #e7391a;
-    text-align: center;
-    vertical-align: top; }
+  .calendar ul {
+    margin: 0; }
+    .calendar ul li {
+      display: inline-block;
+      margin: 0;
+      width: 14.28571%;
+      height: 11.11111vh;
+      border: 1px solid #e7391a;
+      text-align: center;
+      vertical-align: middle; }
   .calendar .calendar-weekday-name > li {
     height: 30px; }
