@@ -12,7 +12,7 @@ module.exports = function(app) {
     }
 
   });
-  app.get("/app", function(req, res) {
+  app.get("/app/", function(req, res) {
     if (req.cookies.remember && req.cookies["user_id"]) {
       userService.checkCookies(req.cookies, function(invalid, doc) {
         if (invalid) {
@@ -27,6 +27,31 @@ module.exports = function(app) {
       res.redirect("/");
     }
 
+  });
+  app.get("/app/workout/:date/", function(req , res){
+    if (req.cookies.remember && req.cookies["user_id"]) {
+      userService.checkCookies(req.cookies, function(invalid, doc) {
+        if (invalid) {
+          res.redirect("/");
+        } else {
+          try {
+            var date = new Date( parseInt(req.params.date));
+            return res.render("app/workout", {
+              "date": date.toString()
+            });
+          } catch (e) {
+            console.log(e);
+            return res.error();
+          }
+
+        }
+      });
+    } else {
+      res.redirect("/");
+    }
+  })
+  .post("/app/workout/:date/" , function(req , res ){
+    return res.end();
   });
   app.all("/api/logout", function(req, res) {
     if (req.cookies.remember && req.cookies["user_id]"]) {

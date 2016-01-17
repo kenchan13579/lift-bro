@@ -6,7 +6,7 @@ var CalendarContainer = React.createClass({
   getInitialState : function(){
     return {
       "date" : new Date(),
-        "weeks": [],
+      "weeks": [],
     }
   },
   nextMonth: function(){
@@ -44,7 +44,8 @@ var CalendarContainer = React.createClass({
         } else {
           week.push({
             date : currentDate.getDate(),
-            longDate: currentDate.toString()
+            longDate: currentDate.toString(),
+            ms: currentDate.valueOf()
           });
           currentDate = new Date(currentDate.getFullYear(),currentDate.getMonth(), ++day);
         }
@@ -93,9 +94,9 @@ var Calendar = React.createClass({
     var that = this;
     var cal =  this.props.data.map(function(week,i){
         var days = week.map(function(day,j){
-            return <li className="calendar-day"  key={i+""+j} onClick={that.setDate.bind(that,day.longDate)}>{day.date}</li>;
+            return <li className="calendar-day"  key={i+""+j} onClick={that.setDate.bind(that,day.longDate)}><a href={"workout/"+day.ms}>{day.date}</a></li>;
         });
-        return <ul key={i} >{days}</ul>;
+        return <ul key={i}>{days}</ul>;
     });
     return cal;
   },
